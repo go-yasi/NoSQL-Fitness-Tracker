@@ -26,7 +26,7 @@ app.get("/exercise", (req, res) => {
 
 // ### You will have 5 api routes to complete.
 // A POST route to create a workout
-app.post("/api/workout", ({body}, res) => {
+app.post("/api/workouts", ({body}, res) => {
     db.Workout.create(body) 
     .then(({_id}) => db.Workout.findOneandUpdate({}, {$push:{ workout: _id }}, { new: true }))
     .then(dbWorkout => {
@@ -39,7 +39,7 @@ app.post("/api/workout", ({body}, res) => {
 
 //  A PUT route to update a workout
 // HINT:you will have to find the workout by id and then push exercises to the exercises array)
-app.put("/api/workout/:id", (req, res) => {
+app.put("/api/workouts/:id", (req, res) => {
     db.Workout.updateOne(
         {
             _id: mongojs.ObjectId(req.params.id)
@@ -69,7 +69,7 @@ app.put("/api/workout/:id", (req, res) => {
 //  A GET route to get the workouts
 // HINT: this will need an aggregate to add all the durations from each exercise together.
 // Here is an example https://docs.mongodb.com/manual/reference/operator/aggregation/addFields/)
-app.get("/api/workout", (req, res) => {
+app.get("/api/workouts", (req, res) => {
     db.Workout.find({})
     .then(dbWorkout => {
         res.json(dbWorkout);

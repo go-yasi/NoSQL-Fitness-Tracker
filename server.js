@@ -46,31 +46,43 @@ app.post("/api/workouts", ({body}, res) => {
 
 //  A PUT route to update a workout
 // HINT:you will have to find the workout by id and then push exercises to the exercises array)
+// app.put("/api/workouts/:id", (req, res) => {
+//     db.Workout.updateOne(
+//         {
+//             _id: mongojs.ObjectId(req.params.id)
+//         },
+//         {$set: {
+//             exercise: {
+//                 name: req.body.name,
+//                 type: req.body.type,
+//                 weight: req.body.weight,
+//                 sets: req.body.sets,
+//                 reps: req.body.reps,
+//                 duration: req.body.duration,
+//                 distance: req.body.distance
+//             },
+//             date: Date.now()
+//         }},
+//         (error, data) => {
+//             if (error) {
+//                 res.send(error);
+//             } else {
+//                 res.send(data);
+//             }
+//         }
+//     );
+// });
+
 app.put("/api/workouts/:id", (req, res) => {
-    db.Workout.updateOne(
-        {
-            _id: mongojs.ObjectId(req.params.id)
-        },
-        {$set: {
-            exercise: {
-                name: req.body.name,
-                type: req.body.type,
-                weight: req.body.weight,
-                sets: req.body.sets,
-                reps: req.body.reps,
-                duration: req.body.duration,
-                distance: req.body.distance
-            },
-            date: Date.now()
-        }},
-        (error, data) => {
-            if (error) {
-                res.send(error);
-            } else {
-                res.send(data);
-            }
-        }
-    );
+    db.Workout.create(req.body)
+    .then((data) => db.Workout.findByIdAndUpdate(req.params.id, {$push: { exercise: data._id }}
+    ))
+    .then(dbWorkout => {
+        res.json(dbWorkout)
+    })
+    .catch(err => {
+        res.json(err)
+    })
 });
 
 //  A GET route to get the workouts

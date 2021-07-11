@@ -15,7 +15,7 @@ const WorkoutSchema = new Schema({
         },
         weight: {
             type: Number,
-            required: true
+            required: false
         },
         sets: {
             type: Number,

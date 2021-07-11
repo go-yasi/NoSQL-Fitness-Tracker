@@ -39,6 +39,32 @@ app.post("/api/workout", ({body}, res) => {
 
 //  A PUT route to update a workout
 // HINT:you will have to find the workout by id and then push exercises to the exercises array)
+app.put("/api/workout/:id", (req, res) => {
+    db.Workout.updateOne(
+        {
+            _id: mongojs.ObjectId(req.params.id)
+        },
+        {$set: {
+            exercise: {
+                name: req.body.name,
+                type: req.body.type,
+                weight: req.body.weight,
+                sets: req.body.sets,
+                reps: req.body.reps,
+                duration: req.body.duration,
+                distance: req.body.distance
+            },
+            date: Date.now()
+        }},
+        (error, data) => {
+            if (error) {
+                res.send(error);
+            } else {
+                res.send(data);
+            }
+        }
+    );
+});
 
 //  A GET route to get the workouts
 // HINT: this will need an aggregate to add all the durations from each exercise together.

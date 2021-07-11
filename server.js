@@ -2,6 +2,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const logger = require("morgan");
+const path = require("path");
 
 const PORT = process.env.PORT || 3000;
 
@@ -19,8 +20,11 @@ app.use(express.static("public"));
 // connect to mongoose DB
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", { useNewUrlParser: true });
 
-// ### You will have 5 api routes to complete.
+app.get("/exercise", (req, res) => {
+    res.sendFile(path.join(__dirname, "./public/exercise.html"))
+});
 
+// ### You will have 5 api routes to complete.
 // A POST route to create a workout
 app.post("/api/workout", ({body}, res) => {
     db.Workout.create(body) 

@@ -21,8 +21,14 @@ app.use(express.static("public"));
 // connect to mongoose DB
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", { useNewUrlParser: true });
 
+// get exercise page
 app.get("/exercise", (req, res) => {
     res.sendFile(path.join(__dirname, "./public/exercise.html"))
+});
+
+// get dashboard page
+app.get("/stats", (req, res) => {
+    res.sendFile(path.join(__dirname, "./public/stats.html"))
 });
 
 // ### You will have 5 api routes to complete.

@@ -101,7 +101,7 @@ app.get("/api/workouts", (req, res) => {
 //   A GET route to get workouts in a specific range
 // HINT:very similar to the one above, but needs a limit (total duration of each workout from the past seven workouts on the stats page). 
 // Here is an exampe https://kb.objectrocket.com/mongo-db/how-to-use-the-mongoose-limit-function-927)
-app.get("/api/workouts/range", (req, res) => {
+app.get("/api/workouts/stats", (req, res) => {
     db.Workout.find({}, (err, result) => {
         if (err) {
             res.send(err);

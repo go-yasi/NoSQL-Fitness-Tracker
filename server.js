@@ -87,10 +87,29 @@ app.get("/api/workouts", (req, res) => {
 });
 
 //   A GET route to get workouts in a specific range
-// HINT:very similar to the one above, but needs a limit. 
+// HINT:very similar to the one above, but needs a limit (total duration of each workout from the past seven workouts on the stats page). 
 // Here is an exampe https://kb.objectrocket.com/mongo-db/how-to-use-the-mongoose-limit-function-927)
+app.get("/api/workouts/range", (req, res) => {
+    db.Workoutfind({}, (err, result) => {
+        if (err) {
+            res.send(err);
+        } else {
+            res.send(result);
+        }
+    })
+    .limit(7);
+});
 
 //   A DELETE route to delete a workout by a specific id
+app.delete("/api/workouts/:id", (req, res) =>{
+    db.Workout.findOneAndRemove({ _id: req.params.id}, (err) => {
+      if(err){
+        return(err);
+      } else{
+        return res
+      }
+    });
+  });
 
 app.listen(PORT, () => {
     console.log(`App running on port ${PORT}!`);

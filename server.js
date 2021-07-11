@@ -22,7 +22,7 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", { use
 // ### You will have 5 api routes to complete.
 
 // A POST route to create a workout
-app.post("api/workout", ({body}, res) => {
+app.post("/api/workout", ({body}, res) => {
     db.Workout.create(body) 
     .then(({_id}) => db.Workout.findOneandUpdate({}, {$push:{ workout: _id }}, { new: true }))
     .then(dbWorkout => {
@@ -33,14 +33,25 @@ app.post("api/workout", ({body}, res) => {
     });
 });
 
-//  A PUT route to update a workout(
+//  A PUT route to update a workout
 // HINT:you will have to find the workout by id and then push exercises to the exercises array)
 
 //  A GET route to get the workouts
-// (HINT: this will need an aggregate to add all the durations from each exercise together. Here is an example https://docs.mongodb.com/manual/reference/operator/aggregation/addFields/)
+// HINT: this will need an aggregate to add all the durations from each exercise together.
+// Here is an example https://docs.mongodb.com/manual/reference/operator/aggregation/addFields/)
+app.get("/api/workout", (req, res) => {
+    db.Workout.find({})
+    .then(dbWorkout => {
+        res.json(dbWorkout);
+    })
+    .catch(err => {
+        res.json(err);
+    });
+});
 
 //   A GET route to get workouts in a specific range
-// (HINT:very similar to the one above, but needs a limit. Here is an exampe https://kb.objectrocket.com/mongo-db/how-to-use-the-mongoose-limit-function-927)
+// HINT:very similar to the one above, but needs a limit. 
+// Here is an exampe https://kb.objectrocket.com/mongo-db/how-to-use-the-mongoose-limit-function-927)
 
 //   A DELETE route to delete a workout by a specific id
 

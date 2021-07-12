@@ -74,9 +74,7 @@ app.post("/api/workouts", ({body}, res) => {
 // });
 
 app.put("/api/workouts/:id", (req, res) => {
-    db.Workout.create(req.body)
-    .then((data) => db.Workout.findByIdAndUpdate(req.params.id, {$push: { exercise: data._id }}
-    ))
+   db.Workout.findByIdAndUpdate(req.params.id, {$push: { exercise: req.body }})
     .then(dbWorkout => {
         res.json(dbWorkout)
     })

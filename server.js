@@ -44,7 +44,7 @@ app.post("/api/workouts", ({body}, res) => {
 
 //  A PUT route to update a workout — HINT:you will have to find the workout by id and then push exercises to the exercises array)
 app.put("/api/workouts/:id", (req, res) => {
-   db.Workout.findByIdAndUpdate(req.params.id, {$push: { exercise: req.body }})
+   db.Workout.findByIdAndUpdate(req.params.id, {$push: { exercise: req.body }}, {new:true})
     .then(dbWorkout => {
         res.json(dbWorkout)
     })
@@ -58,7 +58,7 @@ app.get("/api/workouts", (req, res) => {
     db.Workout.aggregate([
         {
             $addFields: {
-                totalDuration: { $sum: "$duration" }
+                totalDuration: { $sum: "$exercises.duration" }
             }
         }
     ])
@@ -71,7 +71,7 @@ app.get("/api/workouts", (req, res) => {
 });
 
 //   A GET route to get workouts in a specific range — HINT:very similar to the one above, but needs a limit (total duration of each workout from the past seven workouts on the stats page). 
-app.get("/api/workouts/", (req, res) => {
+app.get("/api/workouts/stats", (req, res) => {
     db.Workout.find({}, (err, result) => {
         if (err) {
             res.send(err);
@@ -79,7 +79,13 @@ app.get("/api/workouts/", (req, res) => {
             res.send(result);
         }
     })
-    .limit(7);
+    .limit(7)
+    .then(dbWorkout => {
+        res.json(dbWorkout);
+    }) 
+    .catch (err => {
+        res.json(err);
+    });
 });
 
 //   A DELETE route to delete a workout by a specific id

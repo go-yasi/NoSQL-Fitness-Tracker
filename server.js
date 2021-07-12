@@ -58,7 +58,7 @@ app.get("/api/workouts", (req, res) => {
     db.Workout.aggregate([
         {
             $addFields: {
-                totalDuration: { $sum: "$exercises.duration" }
+                totalDuration: { $sum: "$exercise.duration" }
             }
         }
     ])
@@ -72,13 +72,13 @@ app.get("/api/workouts", (req, res) => {
 
 //   A GET route to get workouts in a specific range — HINT:very similar to the one above, but needs a limit (total duration of each workout from the past seven workouts on the stats page). 
 app.get("/api/workouts/stats", (req, res) => {
-    db.Workout.find({}, (err, result) => {
-        if (err) {
-            res.send(err);
-        } else {
-            res.send(result);
+    db.Workout.aggregate([
+        {
+            $addFields: {
+                totalDuration: { $sum: "$exercise.duration" }
+            }
         }
-    })
+    ])
     .limit(7)
     .then(dbWorkout => {
         res.json(dbWorkout);

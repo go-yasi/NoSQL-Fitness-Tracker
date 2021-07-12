@@ -3,7 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const logger = require("morgan");
 const path = require("path");
-const mongojs = require("mongojs");
+// const mongojs = require("mongojs");
 
 const PORT = process.env.PORT || 3000;
 
@@ -31,11 +31,9 @@ app.get("/stats", (req, res) => {
     res.sendFile(path.join(__dirname, "./public/stats.html"))
 });
 
-// ### You will have 5 api routes to complete.
 // A POST route to create a workout
 app.post("/api/workouts", ({body}, res) => {
     db.Workout.create(body) 
-    .then(({_id}) => db.Workout.findOneandUpdate({}, {$push:{ workout: _id }}, { new: true }))
     .then(dbWorkout => {
         res.json(dbWorkout);
     })
@@ -44,35 +42,7 @@ app.post("/api/workouts", ({body}, res) => {
     });
 });
 
-//  A PUT route to update a workout
-// HINT:you will have to find the workout by id and then push exercises to the exercises array)
-// app.put("/api/workouts/:id", (req, res) => {
-//     db.Workout.updateOne(
-//         {
-//             _id: mongojs.ObjectId(req.params.id)
-//         },
-//         {$set: {
-//             exercise: {
-//                 name: req.body.name,
-//                 type: req.body.type,
-//                 weight: req.body.weight,
-//                 sets: req.body.sets,
-//                 reps: req.body.reps,
-//                 duration: req.body.duration,
-//                 distance: req.body.distance
-//             },
-//             date: Date.now()
-//         }},
-//         (error, data) => {
-//             if (error) {
-//                 res.send(error);
-//             } else {
-//                 res.send(data);
-//             }
-//         }
-//     );
-// });
-
+//  A PUT route to update a workout — HINT:you will have to find the workout by id and then push exercises to the exercises array)
 app.put("/api/workouts/:id", (req, res) => {
    db.Workout.findByIdAndUpdate(req.params.id, {$push: { exercise: req.body }})
     .then(dbWorkout => {
@@ -83,11 +53,15 @@ app.put("/api/workouts/:id", (req, res) => {
     })
 });
 
-//  A GET route to get the workouts
-// HINT: this will need an aggregate to add all the durations from each exercise together.
-// Here is an example https://docs.mongodb.com/manual/reference/operator/aggregation/addFields/)
+//  A GET route to get the workouts — HINT: this will need an aggregate to add all the durations from each exercise together.
 app.get("/api/workouts", (req, res) => {
-    db.Workout.find({})
+    db.Workout.aggregate([
+        {
+            $addFields: {
+                totalDuration: { $sum: "$duration" }
+            }
+        }
+    ])
     .then(dbWorkout => {
         res.json(dbWorkout);
     })
@@ -96,10 +70,8 @@ app.get("/api/workouts", (req, res) => {
     });
 });
 
-//   A GET route to get workouts in a specific range
-// HINT:very similar to the one above, but needs a limit (total duration of each workout from the past seven workouts on the stats page). 
-// Here is an exampe https://kb.objectrocket.com/mongo-db/how-to-use-the-mongoose-limit-function-927)
-app.get("/api/workouts/stats", (req, res) => {
+//   A GET route to get workouts in a specific range — HINT:very similar to the one above, but needs a limit (total duration of each workout from the past seven workouts on the stats page). 
+app.get("/api/workouts/", (req, res) => {
     db.Workout.find({}, (err, result) => {
         if (err) {
             res.send(err);

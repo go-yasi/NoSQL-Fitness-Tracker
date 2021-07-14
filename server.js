@@ -21,6 +21,11 @@ app.use(express.static("public"));
 // connect to mongoose DB
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", { useNewUrlParser: true });
 
+// need this to deploy to heroku
+app.get("/", function(req, res) {
+    res.json(path.join(__dirname, "./public/index.html"));
+  });
+
 // get exercise page
 app.get("/exercise", (req, res) => {
     res.sendFile(path.join(__dirname, "./public/exercise.html"))

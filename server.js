@@ -19,7 +19,12 @@ app.use(express.json());
 app.use(express.static("public"));
 
 // connect to mongoose DB
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", { useNewUrlParser: true });
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", { 
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false
+});
 
 // need this to deploy to heroku
 app.get("/", function(req, res) {

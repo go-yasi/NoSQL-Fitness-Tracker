@@ -12,8 +12,15 @@ When the user loads the page, they should be given the option to create a new wo
 ## Usage
 [Here](https://best-nosql-fitness-tracker.herokuapp.com/) is a link to the deployed application.  
 [Here](https://github.com/go-yasi/NoSql-Fitness-Tracker) is a link to the GitHub repository containing the application code.  
+<<<<<<< HEAD
 Here is a simple walkthrough demonstrating the application's functionality:  
 ![GIF of user interacting with NoSQL Fitness Tracker site](./NoSQL_Fitness_Tracker-by-Yasi_Moshtael.gif)
+=======
+Here is a video walkthrough demonstrating the application's functionality:  
+(https://user-images.githubusercontent.com/69062591/125710613-8a1a48e6-0683-46e0-b1dc-0565f8c85d38.mp4)
+
+
+>>>>>>> 5eef4e34c618df69eb89c4556526827cc634995d
 
 ## Conclusion
 I enjoyed developing this application because it gave me the opportunity to practice working with a NoSQL database, specifically MongoDB (with the Mongoose ORM). In the process, I learned some of the many advantages of using a NoSQL database: 

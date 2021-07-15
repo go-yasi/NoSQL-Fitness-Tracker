@@ -14,7 +14,9 @@ The user should be able to: add exercises to the most recent workout plan, add n
 ## Usage
 [Here](https://best-nosql-fitness-tracker.herokuapp.com/) is a link to the deployed application.  
 [Here](https://github.com/go-yasi/NoSql-Fitness-Tracker) is a link to the GitHub repository containing the application code.  
-Below is an image of the application home page: 
-![Screenshot of NoSQL Fitness Tracker homepage](./nosql-fitness-tracker-screenshot.png)
+Below is a video walkthrough demonstrating the application's functionality: 
+https://user-images.githubusercontent.com/69062591/125710613-8a1a48e6-0683-46e0-b1dc-0565f8c85d38.mp4
+
+
 
 ## Conclusion
